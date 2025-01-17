@@ -1,5 +1,5 @@
 {
-  "name": "@mxcoppell/longleap-tools",
+  "name": "longleap-tools",
   "version": "1.0.0",
   "description": "Calculate monthly stock options expiration dates with market holiday handling",
   "main": "dist/index.js",
