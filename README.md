@@ -7,6 +7,7 @@ Calculate monthly stock options expiration dates with market holiday handling.
 - Calculate monthly option expiration dates (third Friday of each month)
 - Handle market holidays and weekend adjustments
 - Support for special market closures
+- Historical data available from year 2000 onwards
 - TypeScript support with type definitions
 - Comprehensive test coverage
 
@@ -19,7 +20,11 @@ npm install longleap-tools
 ## Usage
 
 ```typescript
-import { getMonthlyOptionExpirationDates, isMarketHoliday, generateHolidays } from 'longleap-tools';
+import { getMonthlyOptionExpirationDates, isMarketHoliday, generateHolidays, getEarliestSupportedYear } from 'longleap-tools';
+
+// Get the earliest supported year
+const earliestYear = getEarliestSupportedYear();
+console.log(earliestYear); // 2000
 
 // Get monthly option expiration dates for 2024
 const dates = getMonthlyOptionExpirationDates(2024, 2024);
@@ -38,7 +43,7 @@ console.log(holidays);
 
 ## Market Holidays
 
-The following market holidays are included:
+The following market holidays are included (from year 2000 onwards):
 - New Year's Day
 - Martin Luther King Jr. Day (Third Monday in January)
 - Presidents Day (Third Monday in February)
