@@ -44,6 +44,6 @@
     "access": "public"
   },
   "dependencies": {
-    "longleap-tools": "^1.1.0"
+    "longleap-tools": "^1.1.1"
   }
 }
