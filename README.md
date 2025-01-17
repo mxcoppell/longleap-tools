@@ -59,25 +59,29 @@ The following market holidays are included:
 - October 29-30, 2012 (Hurricane Sandy)
 - December 5, 2018 (President George H.W. Bush Day of Mourning)
 - March 23, 2020 (COVID-19 Trading Floor Closure)
+- January 9, 2025 (President Jimmy Carter Day of Mourning)
 
 ## API Reference
+
+### getEarliestSupportedYear(): number
+Returns the earliest year (2000) for which holiday data is available.
 
 ### getMonthlyOptionExpirationDates(startYear: number, endYear: number): string[]
 Returns an array of monthly option expiration dates between the specified years (inclusive).
 - Dates are in YYYY-MM-DD format
-- Throws error if years are outside supported range (2000-2050)
+- Throws error if years are before 2000
 - Throws error if start year is greater than end year
 
 ### isMarketHoliday(date: Date): boolean
 Checks if a given date is a market holiday.
 - Returns true if the date is a holiday, false otherwise
-- Throws error if date is outside supported range
+- Throws error if date is before year 2000
 
 ### generateHolidays(startYear: number, endYear: number): string[]
 Generates a list of market holidays between the specified years.
 - Returns array of dates in YYYY-MM-DD format
 - Includes special market closures if within range
-- Throws error if years are outside supported range
+- Throws error if years are before 2000
 
 ## License
 

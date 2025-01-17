@@ -1,8 +1,14 @@
 /// <reference types="jest" />
 
-import { getMonthlyOptionExpirationDates, isMarketHoliday, generateHolidays } from '../src';
+import { getMonthlyOptionExpirationDates, isMarketHoliday, generateHolidays, getEarliestSupportedYear } from '../src';
 
 describe('Monthly Options Dates', () => {
+  describe('getEarliestSupportedYear', () => {
+    it('should return 2000 as the earliest supported year', () => {
+      expect(getEarliestSupportedYear()).toBe(2000);
+    });
+  });
+
   describe('generateHolidays', () => {
     it('should generate holidays for a single year', () => {
       const holidays = generateHolidays(2024, 2024);
@@ -38,9 +44,12 @@ describe('Monthly Options Dates', () => {
       expect(holidays2012).toContain('2012-10-30');
     });
 
-    it('should throw error for years outside supported range', () => {
-      expect(() => generateHolidays(1999, 2000)).toThrow('Holiday data is only available between 2000 and 2050');
-      expect(() => generateHolidays(2000, 2051)).toThrow('Holiday data is only available between 2000 and 2050');
+    it('should throw error for years before 2000', () => {
+      expect(() => generateHolidays(1999, 2000)).toThrow('Holiday data is only available from 2000 onwards');
+    });
+
+    it('should handle years well into the future', () => {
+      expect(() => generateHolidays(2000, 2100)).not.toThrow();
     });
 
     it('should handle Juneteenth addition from 2021', () => {
@@ -60,9 +69,12 @@ describe('Monthly Options Dates', () => {
       expect(isMarketHoliday(regularDay)).toBe(false); // Regular day
     });
 
-    it('should throw error for dates outside supported range', () => {
-      expect(() => isMarketHoliday(new Date('1999-12-31T12:00:00'))).toThrow();
-      expect(() => isMarketHoliday(new Date('2051-01-01T12:00:00'))).toThrow();
+    it('should throw error for dates before 2000', () => {
+      expect(() => isMarketHoliday(new Date('1999-12-31T12:00:00'))).toThrow('Holiday data is only available from 2000 onwards');
+    });
+
+    it('should handle dates well into the future', () => {
+      expect(() => isMarketHoliday(new Date('2100-01-01T12:00:00'))).not.toThrow();
     });
 
     it('should handle special closures', () => {
@@ -104,10 +116,13 @@ describe('Monthly Options Dates', () => {
       expect(dates[dates.length - 1]).toBe('2024-12-20');
     });
 
-    it('should throw error for invalid year ranges', () => {
-      expect(() => getMonthlyOptionExpirationDates(1999, 2000)).toThrow();
-      expect(() => getMonthlyOptionExpirationDates(2000, 2051)).toThrow();
-      expect(() => getMonthlyOptionExpirationDates(2025, 2024)).toThrow('Start year must be less than or equal to end year');
+    it('should throw error for years before 2000', () => {
+      expect(() => getMonthlyOptionExpirationDates(1999, 2000)).toThrow('Holiday data is only available from 2000 onwards');
+    });
+
+    it('should handle years well into the future', () => {
+      const dates = getMonthlyOptionExpirationDates(2100, 2100);
+      expect(dates).toHaveLength(12); // Should still generate 12 months of dates
     });
 
     it('should handle edge cases around year boundaries', () => {

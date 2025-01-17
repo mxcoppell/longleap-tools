@@ -5,7 +5,14 @@
 
 // Constants for supported date range
 const EARLIEST_SUPPORTED_YEAR = 2000;
-const LATEST_SUPPORTED_YEAR = 2050;
+
+/**
+ * Returns the earliest year supported by this package
+ * @returns The earliest year (2000) for which holiday data is available
+ */
+export function getEarliestSupportedYear(): number {
+    return EARLIEST_SUPPORTED_YEAR;
+}
 
 /**
  * Error thrown when a year is outside the supported range
@@ -30,15 +37,15 @@ export class InvalidYearRangeError extends Error {
 /**
  * Validates that a year is within the supported range
  * @param year - The year to validate
- * @throws {YearOutOfRangeError} If the year is outside the supported range
+ * @throws {YearOutOfRangeError} If the year is before the earliest supported year
  */
 function validateYear(year: number): void {
     if (!Number.isInteger(year)) {
         throw new TypeError('Year must be an integer');
     }
-    if (year < EARLIEST_SUPPORTED_YEAR || year > LATEST_SUPPORTED_YEAR) {
+    if (year < EARLIEST_SUPPORTED_YEAR) {
         throw new YearOutOfRangeError(
-            `Holiday data is only available between ${EARLIEST_SUPPORTED_YEAR} and ${LATEST_SUPPORTED_YEAR}`
+            `Holiday data is only available from ${EARLIEST_SUPPORTED_YEAR} onwards`
         );
     }
 }
@@ -200,7 +207,10 @@ export function generateHolidays(startYear: number, endYear: number): string[] {
         ['2018-12-05'],
         
         // COVID-19 Trading Floor Closure
-        ['2020-03-23']
+        ['2020-03-23'],
+
+        // President Jimmy Carter National Day of Mourning
+        ['2025-01-09']
     ];
 
     specialClosures.forEach(closures => {
