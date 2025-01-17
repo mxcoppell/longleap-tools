@@ -42,5 +42,8 @@
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "longleap-tools": "^1.1.0"
   }
 }
