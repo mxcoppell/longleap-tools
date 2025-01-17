@@ -1,4 +1,4 @@
-# Options Toolbox
+# LongLeap Tools
 
 Calculate monthly stock options expiration dates with market holiday handling.
 
@@ -13,13 +13,13 @@ Calculate monthly stock options expiration dates with market holiday handling.
 ## Installation
 
 ```bash
-npm install @mxcoppell/options-toolbox
+npm install @mxcoppell/longleap-tools
 ```
 
 ## Usage
 
 ```typescript
-import { getMonthlyOptionExpirationDates, isMarketHoliday, generateHolidays } from '@mxcoppell/options-toolbox';
+import { getMonthlyOptionExpirationDates, isMarketHoliday, generateHolidays } from '@mxcoppell/longleap-tools';
 
 // Get monthly option expiration dates for 2024
 const dates = getMonthlyOptionExpirationDates(2024, 2024);

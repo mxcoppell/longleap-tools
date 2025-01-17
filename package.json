@@ -1,6 +1,6 @@
 {
-  "name": "@mxcoppell/options-toolbox",
-  "version": "1.0.2",
+  "name": "@mxcoppell/longleap-tools",
+  "version": "1.0.0",
   "description": "Calculate monthly stock options expiration dates with market holiday handling",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mxcoppell/options-toolbox.git"
+    "url": "git+https://github.com/mxcoppell/longleap-tools.git"
   },
   "keywords": [
     "options",
@@ -22,12 +22,12 @@
     "holidays",
     "monthly"
   ],
-  "author": "mxcoppell (https://github.com/mxcoppell)",
+  "author": "mxcoppell",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mxcoppell/options-toolbox/issues"
+    "url": "https://github.com/mxcoppell/longleap-tools/issues"
   },
-  "homepage": "https://github.com/mxcoppell/options-toolbox#readme",
+  "homepage": "https://github.com/mxcoppell/longleap-tools#readme",
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "@types/node": "^20.11.24",
