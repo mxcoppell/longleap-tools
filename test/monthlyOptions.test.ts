@@ -1,8 +1,9 @@
 /// <reference types="jest" />
 
-import { getMonthlyOptionExpirationDates, isMarketHoliday, generateHolidays, getEarliestSupportedYear } from '../src';
+import { getMonthlyOptionExpirationDates, isMarketHoliday, generateHolidays, getEarliestSupportedYear } from '../src/monthlyOptions';
+import { YearOutOfRangeError } from '../src/monthlyOptions';
 
-describe('Monthly Options Dates', () => {
+describe('Monthly Options', () => {
   describe('getEarliestSupportedYear', () => {
     it('should return 2000 as the earliest supported year', () => {
       expect(getEarliestSupportedYear()).toBe(2000);
@@ -131,4 +132,4 @@ describe('Monthly Options Dates', () => {
       expect(dates).toContain('2024-01-19'); // First expiration of 2024
     });
   });
-}); 
+});
