@@ -41,9 +41,13 @@ export async function getHistoricalData(
     startDate: Date,
     endDate: Date
 ): Promise<YahooFinanceData[]> {
+    // Add one day to endDate to ensure we include the last day
+    const adjustedEndDate = new Date(endDate);
+    adjustedEndDate.setDate(adjustedEndDate.getDate() + 1);
+
     const result = await yahooFinance.chart(symbol, {
         period1: startDate,
-        period2: endDate,
+        period2: adjustedEndDate,
         interval: '1d',
     });
 
@@ -59,7 +63,7 @@ export async function getHistoricalData(
             volume: item.volume,
             adjClose: item.adjclose, // Note the lowercase 'c' in 'adjclose'
         };
-    }).sort((a, b) => a.date.getTime() - b.date.getTime());
+    }).sort((a: YahooFinanceData, b: YahooFinanceData) => a.date.getTime() - b.date.getTime());
 }
 
 /**
@@ -74,9 +78,13 @@ export async function getDividends(
     startDate: Date,
     endDate: Date
 ): Promise<Dividend[]> {
+    // Add one day to endDate to ensure we include the last day
+    const adjustedEndDate = new Date(endDate);
+    adjustedEndDate.setDate(adjustedEndDate.getDate() + 1);
+
     const result = await yahooFinance.chart(symbol, {
         period1: startDate,
-        period2: endDate,
+        period2: adjustedEndDate,
         interval: '1d',
         events: 'div',
     });
@@ -84,7 +92,7 @@ export async function getDividends(
     return (result.events?.dividends || []).map((item: any) => ({
         date: new Date(item.date * 1000), // Convert Unix timestamp to JavaScript Date
         amount: item.amount,
-    })).sort((a, b) => a.date.getTime() - b.date.getTime());
+    })).sort((a: Dividend, b: Dividend) => a.date.getTime() - b.date.getTime());
 }
 
 /**
@@ -99,9 +107,13 @@ export async function getStockSplits(
     startDate: Date,
     endDate: Date
 ): Promise<StockSplit[]> {
+    // Add one day to endDate to ensure we include the last day
+    const adjustedEndDate = new Date(endDate);
+    adjustedEndDate.setDate(adjustedEndDate.getDate() + 1);
+
     const result = await yahooFinance.chart(symbol, {
         period1: startDate,
-        period2: endDate,
+        period2: adjustedEndDate,
         interval: '1d',
         events: 'split',
     });
@@ -109,5 +121,5 @@ export async function getStockSplits(
     return (result.events?.splits || []).map((item: any) => ({
         date: new Date(item.date * 1000), // Convert Unix timestamp to JavaScript Date
         splitRatio: item.splitRatio,
-    })).sort((a, b) => a.date.getTime() - b.date.getTime());
+    })).sort((a: StockSplit, b: StockSplit) => a.date.getTime() - b.date.getTime());
 }
