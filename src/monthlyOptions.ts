@@ -229,12 +229,54 @@ export function isMarketHoliday(date: Date): boolean {
         throw new TypeError('Invalid date provided');
     }
 
-    const year = date.getFullYear();
+    const year = date.getUTCFullYear();
     validateYear(year);
 
     const holidays = generateHolidays(year, year);
     const dateStr = date.toISOString().split('T')[0];
-    return holidays.includes(dateStr);
+    const isHoliday = holidays.includes(dateStr);
+    console.log(`Checking if ${dateStr} is a holiday. Result: ${isHoliday}`);
+    return isHoliday;
+}
+
+/**
+ * Check if a given date is a trading day (not a weekend or market holiday)
+ * @param date - The date to check
+ * @returns true if the date is a trading day, false otherwise
+ * @throws {TypeError} If an invalid date is provided
+ * @throws {YearOutOfRangeError} If the date is outside supported range
+ */
+export function isTradingDay(date: Date | string): boolean {
+    let utcDate: Date;
+
+    if (typeof date === 'string') {
+        // If the input is a string, assume it's in 'YYYY-MM-DD' format and create a UTC date
+        const [year, month, day] = date.split('-').map(Number);
+        utcDate = new Date(Date.UTC(year, month - 1, day));
+    } else if (date instanceof Date) {
+        // If it's already a Date object, create a new UTC date from its components
+        utcDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+    } else {
+        throw new TypeError('Invalid date provided');
+    }
+
+    if (isNaN(utcDate.getTime())) {
+        throw new TypeError('Invalid date provided');
+    }
+
+    const year = utcDate.getUTCFullYear();
+    validateYear(year);
+
+    const dayOfWeek = utcDate.getUTCDay();
+    console.log(`Date: ${utcDate.toISOString()}, Day of week: ${dayOfWeek}`);
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+        console.log('Weekend detected');
+        return false; // Weekend
+    }
+
+    const isHoliday = isMarketHoliday(utcDate);
+    console.log(`Is market holiday: ${isHoliday}`);
+    return !isHoliday;
 }
 
 /**

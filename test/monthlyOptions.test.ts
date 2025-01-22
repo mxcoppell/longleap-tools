@@ -1,6 +1,6 @@
 /// <reference types="jest" />
 
-import { getMonthlyOptionExpirationDates, isMarketHoliday, generateHolidays, getEarliestSupportedYear } from '../src/monthlyOptions';
+import { getMonthlyOptionExpirationDates, isMarketHoliday, isTradingDay, generateHolidays, getEarliestSupportedYear } from '../src/monthlyOptions';
 import { YearOutOfRangeError } from '../src/monthlyOptions';
 
 describe('Monthly Options', () => {
@@ -130,6 +130,56 @@ describe('Monthly Options', () => {
       const dates = getMonthlyOptionExpirationDates(2023, 2024);
       expect(dates).toContain('2023-12-15'); // Last expiration of 2023
       expect(dates).toContain('2024-01-19'); // First expiration of 2024
+    });
+  });
+
+  describe('isTradingDay', () => {
+    it('should return true for regular trading days', () => {
+      expect(isTradingDay('2024-01-02')).toBe(true); // Tuesday
+      expect(isTradingDay('2024-01-03')).toBe(true); // Wednesday
+      expect(isTradingDay('2024-01-04')).toBe(true); // Thursday
+      expect(isTradingDay('2024-01-05')).toBe(true); // Friday
+    });
+
+    it('should return false for weekends', () => {
+      expect(isTradingDay('2024-01-06')).toBe(false); // Saturday
+      expect(isTradingDay('2024-01-07')).toBe(false); // Sunday
+    });
+
+    it('should return false for market holidays', () => {
+      expect(isTradingDay('2024-01-01')).toBe(false); // New Year's Day
+      expect(isTradingDay('2024-01-15')).toBe(false); // Martin Luther King Jr. Day
+      expect(isTradingDay('2024-02-19')).toBe(false); // Presidents Day
+      expect(isTradingDay('2024-03-29')).toBe(false); // Good Friday
+      expect(isTradingDay('2024-05-27')).toBe(false); // Memorial Day
+      expect(isTradingDay('2024-06-19')).toBe(false); // Juneteenth
+      expect(isTradingDay('2024-07-04')).toBe(false); // Independence Day
+      expect(isTradingDay('2024-09-02')).toBe(false); // Labor Day
+      expect(isTradingDay('2024-11-28')).toBe(false); // Thanksgiving
+      expect(isTradingDay('2024-12-25')).toBe(false); // Christmas
+    });
+
+    it('should handle observed holidays', () => {
+      expect(isTradingDay('2024-12-24')).toBe(true);  // Christmas Eve (regular trading day)
+      expect(isTradingDay('2024-12-25')).toBe(false); // Christmas Day
+    });
+
+    it('should throw error for dates before 2000', () => {
+      expect(() => isTradingDay('1999-12-31')).toThrow('Holiday data is only available from 2000 onwards');
+    });
+
+    it('should handle special closures', () => {
+      expect(isTradingDay('2001-09-11')).toBe(false); // September 11, 2001
+      expect(isTradingDay('2012-10-29')).toBe(false); // Hurricane Sandy
+    });
+
+    it('should handle dates well into the future', () => {
+      expect(() => isTradingDay('2100-01-01')).not.toThrow();
+    });
+
+    it('should work with both string and Date inputs', () => {
+      expect(isTradingDay('2024-01-02')).toBe(true);
+      expect(isTradingDay(new Date('2024-01-02T00:00:00Z'))).toBe(true);
     });
   });
 });
