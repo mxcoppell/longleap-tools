@@ -1,6 +1,6 @@
 {
   "name": "longleap-tools",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "Tools for calculating monthly options expiration dates and market holidays",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
