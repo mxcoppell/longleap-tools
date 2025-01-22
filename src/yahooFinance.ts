@@ -1,3 +1,4 @@
+import 'cross-fetch';
 import yahooFinance from 'yahoo-finance2';
 
 /**
