@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { getHistoricalData, getDividends, getStockSplits } from '../src/yahooFinance';
 
 describe('Yahoo Finance Functions', () => {

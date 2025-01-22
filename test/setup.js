@@ -1,2 +1,1 @@
-const fetch = require('node-fetch');
-global.fetch = fetch; 
+// No need to set up fetch since we're using Node.js >= 18 which has native fetch support 
