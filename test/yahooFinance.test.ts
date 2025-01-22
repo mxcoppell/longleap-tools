@@ -1,3 +1,4 @@
+import 'cross-fetch';
 import { getHistoricalData, getDividends, getStockSplits } from '../src/yahooFinance';
 
 describe('Yahoo Finance Functions', () => {
@@ -11,7 +12,7 @@ describe('Yahoo Finance Functions', () => {
 
       console.log('Request Type: getHistoricalData');
       console.log('Request Parameters:', { symbol, startDate: startDate.toISOString(), endDate: endDate.toISOString() });
-      
+
       const data = await getHistoricalData(symbol, startDate, endDate);
       console.log('Response Data:');
       console.table(data.map(item => ({
@@ -32,7 +33,7 @@ describe('Yahoo Finance Functions', () => {
 
       console.log('Request Type: getHistoricalData');
       console.log('Request Parameters:', { symbol, startDate: startDate.toISOString(), endDate: endDate.toISOString() });
-      
+
       const data = await getHistoricalData(symbol, startDate, endDate);
       console.log('Response Data:');
       console.table(data.map(item => ({
@@ -68,7 +69,7 @@ describe('Yahoo Finance Functions', () => {
 
       console.log('Request Type: getDividends');
       console.log('Request Parameters:', { symbol, startDate: startDate.toISOString(), endDate: endDate.toISOString() });
-      
+
       const data = await getDividends(symbol, startDate, endDate);
       console.log('Response Data:');
       console.table(data.map(item => ({
@@ -88,7 +89,7 @@ describe('Yahoo Finance Functions', () => {
 
       console.log('Request Type: getDividends');
       console.log('Request Parameters:', { symbol, startDate: startDate.toISOString(), endDate: endDate.toISOString() });
-      
+
       const data = await getDividends(symbol, startDate, endDate);
       console.log('Response Data:');
       console.table(data);
@@ -106,7 +107,7 @@ describe('Yahoo Finance Functions', () => {
 
       console.log('Request Type: getStockSplits');
       console.log('Request Parameters:', { symbol, startDate: startDate.toISOString(), endDate: endDate.toISOString() });
-      
+
       const data = await getStockSplits(symbol, startDate, endDate);
       console.log('Response Data:');
       console.table(data.map(item => ({
@@ -127,7 +128,7 @@ describe('Yahoo Finance Functions', () => {
 
       console.log('Request Type: getStockSplits');
       console.log('Request Parameters:', { symbol, startDate: startDate.toISOString(), endDate: endDate.toISOString() });
-      
+
       const data = await getStockSplits(symbol, startDate, endDate);
       console.log('Response Data:');
       console.table(data);
