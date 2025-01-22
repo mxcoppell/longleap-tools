@@ -1,4 +1,4 @@
-import 'cross-fetch';
+import fetch from 'node-fetch';
 import yahooFinance from 'yahoo-finance2';
 
 /**
