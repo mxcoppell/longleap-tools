@@ -1,6 +1,6 @@
 {
   "name": "longleap-tools",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Calculate monthly stock options expiration dates with market holiday handling and fetch sorted historical stock data, dividends, and splits from Yahoo Finance",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,7 +36,6 @@
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "@types/node": "^20.11.24",
-    "cross-fetch": "^4.1.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
     "typescript": "^5.7.3"
@@ -50,6 +49,7 @@
     "access": "public"
   },
   "dependencies": {
+    "cross-fetch": "^4.1.0",
     "yahoo-finance2": "^2.13.3"
   }
 }
