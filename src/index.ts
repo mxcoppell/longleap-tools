@@ -18,6 +18,7 @@ import {
 import {
     generateHolidays,
     isMarketHoliday,
+    isTradingDay,
     getMonthlyOptionExpirationDates,
     getEarliestSupportedYear,
     YearOutOfRangeError,
@@ -33,6 +34,7 @@ export {
     StockSplit,
     generateHolidays,
     isMarketHoliday,
+    isTradingDay,
     getMonthlyOptionExpirationDates,
     getEarliestSupportedYear,
     YearOutOfRangeError,

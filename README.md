@@ -25,6 +25,7 @@ npm install longleap-tools
 import { 
   getMonthlyOptionExpirationDates, 
   isMarketHoliday, 
+  isTradingDay,
   generateHolidays, 
   getEarliestSupportedYear,
   getHistoricalData,
@@ -42,6 +43,9 @@ console.log(dates);
 
 const isHoliday = isMarketHoliday(new Date('2024-01-01'));
 console.log(isHoliday); // true
+
+const isTradingDay = isTradingDay(new Date('2024-01-02'));
+console.log(isTradingDay); // true
 
 const holidays = generateHolidays(2024, 2024);
 console.log(holidays);
@@ -109,6 +113,11 @@ Generates a list of market holidays between the specified years.
 - Returns array of dates in YYYY-MM-DD format
 - Includes special market closures if within range
 - Throws error if years are before 2000
+
+#### isTradingDay(date: Date): boolean
+Checks if a given date is a trading day (not a weekend or market holiday).
+- Returns true if the date is a trading day, false otherwise
+- Throws error if date is before year 2000
 
 ### Yahoo Finance Functions
 
@@ -182,6 +191,10 @@ MIT License - see LICENSE file for details.
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Changelog
+
+### Version 1.4.0
+- Added new `isTradingDay` function to check if a given date is a trading day
+- Updated documentation and tests to include the new function
 
 ### Version 1.3.0
 - Refactored code to improve modularity: monthly options functions are now in a separate module
