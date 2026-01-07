@@ -68,6 +68,7 @@ console.log(splits);
 ## Market Holidays
 
 The following market holidays are included (from year 2000 onwards):
+
 - New Year's Day
 - Martin Luther King Jr. Day (Third Monday in January)
 - Presidents Day (Third Monday in February)
@@ -80,10 +81,12 @@ The following market holidays are included (from year 2000 onwards):
 - Christmas Day (December 25)
 
 ### Holiday Observance Rules
+
 - If the holiday falls on a Saturday, it is usually observed on the preceding Friday
 - If the holiday falls on a Sunday, it is usually observed on the following Monday
 
 ### Special Market Closures
+
 - September 11-14, 2001 (September 11 attacks)
 - October 29-30, 2012 (Hurricane Sandy)
 - December 5, 2018 (President George H.W. Bush Day of Mourning)
@@ -95,50 +98,66 @@ The following market holidays are included (from year 2000 onwards):
 ### Market Holiday and Option Expiration Functions
 
 #### getEarliestSupportedYear(): number
+
 Returns the earliest year (2000) for which holiday data is available.
 
 #### getMonthlyOptionExpirationDates(startYear: number, endYear: number): string[]
+
 Returns an array of monthly option expiration dates between the specified years (inclusive).
+
 - Dates are in YYYY-MM-DD format
 - Throws error if years are before 2000
 - Throws error if start year is greater than end year
 
 #### isMarketHoliday(date: Date): boolean
+
 Checks if a given date is a market holiday.
+
 - Returns true if the date is a holiday, false otherwise
 - Throws error if date is before year 2000
 
 #### generateHolidays(startYear: number, endYear: number): string[]
+
 Generates a list of market holidays between the specified years.
+
 - Returns array of dates in YYYY-MM-DD format
 - Includes special market closures if within range
 - Throws error if years are before 2000
 
 #### isTradingDay(date: Date): boolean
+
 Checks if a given date is a trading day (not a weekend or market holiday).
+
 - Returns true if the date is a trading day, false otherwise
 - Throws error if date is before year 2000
 
 ### Yahoo Finance Functions
 
 #### getHistoricalData(symbol: string, startDate: Date, endDate: Date): Promise<YahooFinanceData[]>
+
 Fetches historical stock data for the given symbol and date range.
+
 - Returns an array of objects containing date, open, high, low, close, volume, and adjClose
 - Data is sorted by date in ascending order
 
 #### getDividends(symbol: string, startDate: Date, endDate: Date): Promise<Dividend[]>
+
 Retrieves dividend data for the given symbol and date range.
+
 - Returns an array of objects containing date and amount
 - Data is sorted by date in ascending order
 
 #### getStockSplits(symbol: string, startDate: Date, endDate: Date): Promise<StockSplit[]>
+
 Obtains stock split information for the given symbol and date range.
+
 - Returns an array of objects containing date and splitRatio
 - Data is sorted by date in ascending order
 
 ### Data Structures
 
 #### YahooFinanceData
+
 ```typescript
 interface YahooFinanceData {
     date: Date;
@@ -152,6 +171,7 @@ interface YahooFinanceData {
 ```
 
 #### Dividend
+
 ```typescript
 interface Dividend {
     date: Date;
@@ -160,6 +180,7 @@ interface Dividend {
 ```
 
 #### StockSplit
+
 ```typescript
 interface StockSplit {
     date: Date;
@@ -192,22 +213,33 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Changelog
 
+### Version 1.5.2 (2026-01-07)
+
+- Fixed Yahoo Finance data download by upgrading yahoo-finance2 from v2.x to v3.11.2
+- Added ESLint support for improved code quality and consistency
+- Fixed security vulnerabilities in dependencies
+
 ### Version 1.4.0
+
 - Added new `isTradingDay` function to check if a given date is a trading day
 - Updated documentation and tests to include the new function
 
 ### Version 1.3.0
+
 - Refactored code to improve modularity: monthly options functions are now in a separate module
 - All existing functionality remains unchanged, but import structure may be affected for users importing specific functions
 
 ### Version 1.2.0
+
 - Added sorting of all data (historical, dividends, splits) by date in ascending order
 - Improved error handling and data validation
 - Updated documentation with more comprehensive details
 
 ### Version 1.1.0
+
 - Added support for fetching stock split data
 - Improved date parsing for all Yahoo Finance functions
 
 ### Version 1.0.0
+
 - Initial release with support for market holidays, option expiration dates, and basic Yahoo Finance data fetching
