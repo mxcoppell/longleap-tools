@@ -307,7 +307,6 @@ export function getMonthlyOptionExpirationDates(startYear: number, endYear: numb
     while (currentDate <= normalizedEndDate) {
         let fridayCount = 0;
         const month = currentDate.getMonth();
-        const year = currentDate.getFullYear();
 
         // Find the third Friday of the current month
         while (currentDate.getMonth() === month) {

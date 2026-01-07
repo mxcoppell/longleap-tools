@@ -1,4 +1,6 @@
-import yahooFinance from 'yahoo-finance2';
+import YahooFinance from 'yahoo-finance2';
+
+const yahooFinance = new YahooFinance();
 
 /**
  * Represents historical stock data for a single day.
@@ -49,7 +51,7 @@ export async function getHistoricalData(
         period1: startDate,
         period2: adjustedEndDate,
         interval: '1d',
-    });
+    }) as any;
 
     return result.quotes.map((item: any) => {
         // Check if the timestamp is in seconds or milliseconds
@@ -87,7 +89,7 @@ export async function getDividends(
         period2: adjustedEndDate,
         interval: '1d',
         events: 'div',
-    });
+    }) as any;
 
     return (result.events?.dividends || []).map((item: any) => ({
         date: new Date(item.date * 1000), // Convert Unix timestamp to JavaScript Date
@@ -116,7 +118,7 @@ export async function getStockSplits(
         period2: adjustedEndDate,
         interval: '1d',
         events: 'split',
-    });
+    }) as any;
 
     return (result.events?.splits || []).map((item: any) => ({
         date: new Date(item.date * 1000), // Convert Unix timestamp to JavaScript Date
