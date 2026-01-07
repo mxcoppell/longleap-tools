@@ -41,5 +41,5 @@ jobs:
       
     - name: Verify package-lock.json is up to date
       run: |
-        npm ci --package-lock-only
+        npm ci --package-lock-only --ignore-scripts
         git diff --exit-code package-lock.json
