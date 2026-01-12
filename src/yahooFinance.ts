@@ -92,16 +92,10 @@ export async function getDividends(
     }) as any;
 
     return (result.events?.dividends || []).map((item: any) => {
-        // Check if the timestamp is in seconds or milliseconds, or already a Date
-        let date: Date;
-        if (item.date instanceof Date) {
-            date = item.date;
-        } else if (typeof item.date === 'number') {
-            // Check if timestamp is in seconds (< 10000000000) or milliseconds
-            date = new Date(item.date > 10000000000 ? item.date : item.date * 1000);
-        } else {
-            date = new Date(item.date);
-        }
+        // Yahoo Finance API returns timestamps as numbers (seconds or milliseconds)
+        const timestamp = typeof item.date === 'number' ? item.date : new Date(item.date).getTime() / 1000;
+        const date = new Date(timestamp > 10000000000 ? timestamp : timestamp * 1000);
+
         return {
             date: isNaN(date.getTime()) ? new Date() : date,
             amount: item.amount,
@@ -133,16 +127,10 @@ export async function getStockSplits(
     }) as any;
 
     return (result.events?.splits || []).map((item: any) => {
-        // Check if the timestamp is in seconds or milliseconds, or already a Date
-        let date: Date;
-        if (item.date instanceof Date) {
-            date = item.date;
-        } else if (typeof item.date === 'number') {
-            // Check if timestamp is in seconds (< 10000000000) or milliseconds
-            date = new Date(item.date > 10000000000 ? item.date : item.date * 1000);
-        } else {
-            date = new Date(item.date);
-        }
+        // Yahoo Finance API returns timestamps as numbers (seconds or milliseconds)
+        const timestamp = typeof item.date === 'number' ? item.date : new Date(item.date).getTime() / 1000;
+        const date = new Date(timestamp > 10000000000 ? timestamp : timestamp * 1000);
+
         return {
             date: isNaN(date.getTime()) ? new Date() : date,
             splitRatio: item.splitRatio,
