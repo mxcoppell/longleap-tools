@@ -9,6 +9,7 @@ Calculate monthly stock options expiration dates with market holiday handling an
 - Support for special market closures
 - Historical data available from year 2000 onwards
 - Fetch historical stock data, dividends, and stock splits from Yahoo Finance
+- **CLI utility for batch downloading historical data to CSV files**
 - All data sorted by date in ascending order
 - TypeScript support with type definitions
 - Comprehensive test coverage
@@ -64,6 +65,298 @@ const splits = await getStockSplits('AAPL', new Date('2000-01-01'), new Date());
 console.log(splits);
 // [{date: Date, splitRatio: string}, ...]
 ```
+
+## CLI Utility: Historical Data Downloader
+
+The package includes a powerful command-line utility for batch downloading historical stock data from Yahoo Finance to CSV files. This is ideal for data analysis, portfolio tracking, backtesting, and research.
+
+### Installation & Setup
+
+To use the CLI utility globally on your system:
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/longleap-tools.git
+cd longleap-tools
+
+# Install dependencies
+npm install
+
+# Build the project
+npm run build
+
+# Link CLI tool globally (optional, for global usage)
+npm link
+```
+
+After running `npm link`, the `download-historical-data` command will be available globally in your terminal.
+
+### Quick Start
+
+```bash
+# Download year-to-date prices for SPY
+download-historical-data --symbols SPY --range YTD
+
+# Download last 5 years of dividend data for AAPL and MSFT
+download-historical-data -s AAPL,MSFT -r 5Y -d dividends -o ./my-data
+```
+
+### Command Line Arguments
+
+| Argument | Short | Description | Required | Default |
+|----------|-------|-------------|----------|---------|
+| `--symbols` | `-s` | Comma-separated list of stock symbols | ✓ Yes | - |
+| `--range` | `-r` | Date range specification | ✓ Yes | - |
+| `--data-type` | `-d` | Type of data to download | No | `prices` |
+| `--output` | `-o` | Output folder path | No | `./data` |
+
+### Date Range Options
+
+The `--range` argument supports the following formats:
+
+| Range | Description | Example Start Date |
+|-------|-------------|-------------------|
+| `YTD` | Year to date (Jan 1 to today) | 2026-01-01 |
+| `1Y` | Last 1 year | 2025-01-12 |
+| `3Y` | Last 3 years | 2023-01-12 |
+| `5Y` | Last 5 years | 2021-01-12 |
+| `10Y` | Last 10 years | 2016-01-12 |
+| `20Y` | Last 20 years | 2006-01-12 |
+| `MAX` | Maximum available data | 2000-01-01 |
+| `YYYYMMDD-YYYYMMDD` | Custom date range | (your dates) |
+
+**Note:** All data is limited to dates from 2000-01-01 onwards.
+
+**Custom Date Range Examples:**
+
+- `20240101-20241231` - All of 2024
+- `20200301-20200331` - March 2020
+- `20100101-20231231` - 2010 through 2023
+
+### Data Types
+
+Use the `--data-type` (or `-d`) flag to specify what type of data to download:
+
+#### Prices (default)
+
+Downloads OHLCV (Open, High, Low, Close, Volume) data plus adjusted close.
+
+**CSV Columns:**
+
+- `Date` - Trading date (YYYY-MM-DD)
+- `Open` - Opening price
+- `High` - Highest price
+- `Low` - Lowest price
+- `Close` - Closing price
+- `Volume` - Trading volume
+- `AdjClose` - Adjusted closing price (accounts for splits/dividends)
+
+**Filename:** `{SYMBOL}_historical.csv`
+
+#### Dividends
+
+Downloads dividend payment information.
+
+**CSV Columns:**
+
+- `Date` - Ex-dividend date (YYYY-MM-DD)
+- `Amount` - Dividend amount per share
+
+**Filename:** `{SYMBOL}_dividends.csv`
+
+#### Splits
+
+Downloads stock split information.
+
+**CSV Columns:**
+
+- `Date` - Split date (YYYY-MM-DD)
+- `SplitRatio` - Split ratio (e.g., "2:1", "3:2")
+
+**Filename:** `{SYMBOL}_splits.csv`
+
+### Usage Examples
+
+#### Basic: Download Prices (Default)
+
+```bash
+# Download YTD prices for a single symbol
+download-historical-data --symbols SPY --range YTD
+
+# Download 1-year prices for multiple symbols
+download-historical-data -s SPY,QQQ,NVDA -r 1Y
+```
+
+#### Download Dividends
+
+```bash
+# Download 5 years of dividend history
+download-historical-data -s AAPL -r 5Y -d dividends
+
+# Download dividends for multiple dividend-paying stocks
+download-historical-data -s KO,PEP,JNJ,PG -r 10Y -d dividends -o ./dividends
+```
+
+#### Download Stock Splits
+
+```bash
+# Download all available split history
+download-historical-data -s AAPL,TSLA,NVDA -r MAX -d splits
+
+# Download recent splits
+download-historical-data -s GOOGL -r 3Y -d splits
+```
+
+#### Custom Date Ranges
+
+```bash
+# Download specific date range
+download-historical-data -s SPY -r 20240101-20241231
+
+# Download data for a specific quarter
+download-historical-data -s QQQ -r 20240401-20240630 -o ./q2-2024
+
+# Download historical period
+download-historical-data -s MSFT -r 20100101-20151231
+```
+
+#### All Date Range Options
+
+```bash
+# Year to date
+download-historical-data -s AAPL -r YTD
+
+# 1 year back
+download-historical-data -s AAPL -r 1Y
+
+# 3 years back
+download-historical-data -s AAPL -r 3Y
+
+# 5 years back
+download-historical-data -s AAPL -r 5Y
+
+# 10 years back
+download-historical-data -s AAPL -r 10Y
+
+# 20 years back
+download-historical-data -s AAPL -r 20Y
+
+# Maximum available (since 2000)
+download-historical-data -s AAPL -r MAX
+```
+
+#### Specify Output Folder
+
+```bash
+# Download to custom folder
+download-historical-data -s SPY -r 1Y -o ./my-data
+
+# Organize by data type
+download-historical-data -s AAPL -r 5Y -d dividends -o ./income-tracking
+download-historical-data -s AAPL -r 5Y -d prices -o ./price-history
+download-historical-data -s AAPL -r 5Y -d splits -o ./corporate-actions
+```
+
+### Example Workflows
+
+#### Portfolio Tracking
+
+Download complete historical data for all portfolio holdings:
+
+```bash
+download-historical-data -s AAPL,MSFT,GOOGL,AMZN,NVDA -r MAX -d prices -o ./portfolio
+download-historical-data -s AAPL,MSFT,GOOGL,AMZN,NVDA -r MAX -d dividends -o ./portfolio
+download-historical-data -s AAPL,MSFT,GOOGL,AMZN,NVDA -r MAX -d splits -o ./portfolio
+```
+
+#### Recent Market Analysis
+
+Download recent price data for sector analysis:
+
+```bash
+# Technology sector
+download-historical-data -s AAPL,MSFT,GOOGL,META,NVDA -r 1Y -o ./tech-sector
+
+# Financial sector
+download-historical-data -s JPM,BAC,WFC,GS,MS -r 1Y -o ./financial-sector
+```
+
+#### Dividend Income Tracking
+
+Download dividend history for income portfolio:
+
+```bash
+download-historical-data -s JNJ,PG,KO,PEP,MCD,WMT -r 10Y -d dividends -o ./dividend-income
+```
+
+#### Historical Adjustments
+
+Download split history for price adjustment calculations:
+
+```bash
+download-historical-data -s AAPL,TSLA,NVDA,GOOGL,AMZN -r MAX -d splits -o ./splits-history
+```
+
+### Output Format
+
+#### CSV File Structure
+
+All CSV files include a header row followed by data rows. Dates are in `YYYY-MM-DD` format and data is sorted in ascending order by date.
+
+**Example Price Data (`SPY_historical.csv`):**
+
+```csv
+Date,Open,High,Low,Close,Volume,AdjClose
+2024-01-02,475.12,478.45,474.89,477.32,65234100,477.32
+2024-01-03,477.50,479.88,476.23,478.91,72156300,478.91
+2024-01-04,479.00,480.12,477.65,479.45,68943200,479.45
+```
+
+**Example Dividend Data (`AAPL_dividends.csv`):**
+
+```csv
+Date,Amount
+2024-02-09,0.24
+2024-05-10,0.24
+2024-08-12,0.25
+2024-11-08,0.25
+```
+
+**Example Split Data (`NVDA_splits.csv`):**
+
+```csv
+Date,SplitRatio
+2021-07-20,4:1
+2024-06-07,10:1
+```
+
+#### File Naming Convention
+
+- Prices: `{SYMBOL}_historical.csv`
+- Dividends: `{SYMBOL}_dividends.csv`
+- Splits: `{SYMBOL}_splits.csv`
+
+### Error Handling
+
+The CLI utility provides clear feedback:
+
+```bash
+✓ Successfully downloaded 252 records for SPY to ./data/SPY_historical.csv
+⚠️  No dividend data found for BRK.B
+✗ Error downloading INVALID: Symbol not found
+```
+
+- **Success**: Shows record count and output file path
+- **Warning**: Indicates when no data is available (e.g., no dividends/splits)
+- **Error**: Displays specific error messages for failed downloads
+
+### Notes
+
+- The utility requires an active internet connection to fetch data from Yahoo Finance
+- Rate limiting may apply for large batches of symbols
+- Data availability depends on Yahoo Finance's data coverage
+- Some symbols may not have dividend or split data
+- Very old or delisted stocks may have limited data availability
 
 ## Market Holidays
 
@@ -212,6 +505,14 @@ MIT License - see LICENSE file for details.
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Changelog
+
+### Version 1.6.0 (2026-01-12)
+
+- **New Feature:** Added CLI utility for batch downloading historical data to CSV files
+- Supports downloading prices, dividends, and stock splits
+- Flexible date range options: YTD, 1Y, 3Y, 5Y, 10Y, 20Y, MAX, and custom ranges
+- Command: `download-historical-data` with configurable output folders
+- Comprehensive documentation and usage examples
 
 ### Version 1.5.2 (2026-01-07)
 

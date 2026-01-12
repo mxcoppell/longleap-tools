@@ -91,10 +91,22 @@ export async function getDividends(
         events: 'div',
     }) as any;
 
-    return (result.events?.dividends || []).map((item: any) => ({
-        date: new Date(item.date * 1000), // Convert Unix timestamp to JavaScript Date
-        amount: item.amount,
-    })).sort((a: Dividend, b: Dividend) => a.date.getTime() - b.date.getTime());
+    return (result.events?.dividends || []).map((item: any) => {
+        // Check if the timestamp is in seconds or milliseconds, or already a Date
+        let date: Date;
+        if (item.date instanceof Date) {
+            date = item.date;
+        } else if (typeof item.date === 'number') {
+            // Check if timestamp is in seconds (< 10000000000) or milliseconds
+            date = new Date(item.date > 10000000000 ? item.date : item.date * 1000);
+        } else {
+            date = new Date(item.date);
+        }
+        return {
+            date: isNaN(date.getTime()) ? new Date() : date,
+            amount: item.amount,
+        };
+    }).sort((a: Dividend, b: Dividend) => a.date.getTime() - b.date.getTime());
 }
 
 /**
@@ -120,8 +132,20 @@ export async function getStockSplits(
         events: 'split',
     }) as any;
 
-    return (result.events?.splits || []).map((item: any) => ({
-        date: new Date(item.date * 1000), // Convert Unix timestamp to JavaScript Date
-        splitRatio: item.splitRatio,
-    })).sort((a: StockSplit, b: StockSplit) => a.date.getTime() - b.date.getTime());
+    return (result.events?.splits || []).map((item: any) => {
+        // Check if the timestamp is in seconds or milliseconds, or already a Date
+        let date: Date;
+        if (item.date instanceof Date) {
+            date = item.date;
+        } else if (typeof item.date === 'number') {
+            // Check if timestamp is in seconds (< 10000000000) or milliseconds
+            date = new Date(item.date > 10000000000 ? item.date : item.date * 1000);
+        } else {
+            date = new Date(item.date);
+        }
+        return {
+            date: isNaN(date.getTime()) ? new Date() : date,
+            splitRatio: item.splitRatio,
+        };
+    }).sort((a: StockSplit, b: StockSplit) => a.date.getTime() - b.date.getTime());
 }

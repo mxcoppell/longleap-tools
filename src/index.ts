@@ -25,6 +25,9 @@ import {
     InvalidYearRangeError
 } from './monthlyOptions';
 
+// Utilities
+import { downloadHistoricalData } from './utilities/downloadHistoricalData';
+
 export {
     getHistoricalData,
     getDividends,
@@ -38,5 +41,6 @@ export {
     getMonthlyOptionExpirationDates,
     getEarliestSupportedYear,
     YearOutOfRangeError,
-    InvalidYearRangeError
+    InvalidYearRangeError,
+    downloadHistoricalData
 };

@@ -1,9 +1,12 @@
 {
   "name": "longleap-tools",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "Tools for calculating monthly options expiration dates and market holidays",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "download-historical-data": "dist/utilities/downloadHistoricalData.js"
+  },
   "scripts": {
     "test": "jest",
     "build": "tsc",
@@ -46,6 +49,7 @@
     "access": "public"
   },
   "dependencies": {
+    "csv-writer": "^1.6.0",
     "luxon": "^3.4.4",
     "yahoo-finance2": "^3.11.2"
   }
