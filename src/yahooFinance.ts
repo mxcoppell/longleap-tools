@@ -91,10 +91,16 @@ export async function getDividends(
         events: 'div',
     }) as any;
 
-    return (result.events?.dividends || []).map((item: any) => ({
-        date: new Date(item.date * 1000), // Convert Unix timestamp to JavaScript Date
-        amount: item.amount,
-    })).sort((a: Dividend, b: Dividend) => a.date.getTime() - b.date.getTime());
+    return (result.events?.dividends || []).map((item: any) => {
+        // Yahoo Finance API returns timestamps as numbers (seconds or milliseconds)
+        const timestamp = typeof item.date === 'number' ? item.date : new Date(item.date).getTime() / 1000;
+        const date = new Date(timestamp > 10000000000 ? timestamp : timestamp * 1000);
+
+        return {
+            date: isNaN(date.getTime()) ? new Date() : date,
+            amount: item.amount,
+        };
+    }).sort((a: Dividend, b: Dividend) => a.date.getTime() - b.date.getTime());
 }
 
 /**
@@ -120,8 +126,14 @@ export async function getStockSplits(
         events: 'split',
     }) as any;
 
-    return (result.events?.splits || []).map((item: any) => ({
-        date: new Date(item.date * 1000), // Convert Unix timestamp to JavaScript Date
-        splitRatio: item.splitRatio,
-    })).sort((a: StockSplit, b: StockSplit) => a.date.getTime() - b.date.getTime());
+    return (result.events?.splits || []).map((item: any) => {
+        // Yahoo Finance API returns timestamps as numbers (seconds or milliseconds)
+        const timestamp = typeof item.date === 'number' ? item.date : new Date(item.date).getTime() / 1000;
+        const date = new Date(timestamp > 10000000000 ? timestamp : timestamp * 1000);
+
+        return {
+            date: isNaN(date.getTime()) ? new Date() : date,
+            splitRatio: item.splitRatio,
+        };
+    }).sort((a: StockSplit, b: StockSplit) => a.date.getTime() - b.date.getTime());
 }
